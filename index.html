@@ -11,6 +11,7 @@
         .autocomplete__input {
             color: white;
         }
+
         .select-wrapper label {
             color: white;
         }
@@ -27,15 +28,11 @@
                         <div class="pt-4">
                             <form id="searchForm" action="index.html" method="post">
                                 <div class="select-wrapper">
-                                    <label for="accessibleAutocomplete">Cerca le news per categoria o per regione.</label>
-                                    <select class="form-control" id="accessibleAutocomplete" title="Scegli una provincia"
-                                        required>
-                                        <option selected value="">Scegli una opzione</option>
-                                        <option value='Cronaca'>Cronaca</option>
-                                        <option value='Economia'>Economia</option>
-                                        <option value='Cronaca'>Cultura</option>
-                                        <option value='Economia'>Politica</option>
-                                        <option value='Economia'>Sport</option>
+                                    <label for="accessibleAutocomplete">Cerca le news per categoria o per
+                                        regione.</label>
+                                    <select class="form-control" id="accessibleAutocomplete"
+                                        title="Scegli una provincia" required>
+
                                     </select>
                                 </div>
                                 <button class="btn btn-primary mt-3" type="submit" data-focus-mouse="false">
@@ -66,43 +63,55 @@
     <script src="./bootstrap-italia/js/bootstrap-italia.bundle.min.js"></script>
     <script src="./ansa.js/bundle.js"></script>
     <script src="https://unpkg.com/mustache@latest"></script>
+    <script id="templateCategories" type="x-tmpl-mustache">
+        <option selected value="">Scegli una opzione</option>
+        {{#categories}}
+        <option value='{{.}}'>{{.}}</option>
+        {{/categories}}
+    </script>
     <script id="templateCardsNews" type="x-tmpl-mustache">
-            <h2>Tutte le notizie di {{category}}</h2>
-            {{#news}}
-            <div class="card-wrapper">
-                <div class="card card-img no-after shadow">
-                  <div class="img-responsive-wrapper">
-                    <div class="img-responsive img-responsive-panoramic">
-                      <figure class="img-wrapper">
-                        <img src="{{media}}" title="Immagine {{title}}" alt="Immagine {{description}}">
-                      </figure>
-                      <div class="card-calendar d-flex flex-column justify-content-center">
-                        <span class="card-date">{{daypublished}}</span>
-                        <span class="card-day">{{monthpublished}}</span>
-                      </div>
+        <h2>Tutte le notizie di {{category}}</h2>
+        {{#news}}
+        <div class="card-wrapper">
+            <div class="card card-img no-after shadow">
+                <div class="img-responsive-wrapper">
+                <div class="img-responsive img-responsive-panoramic">
+                    <figure class="img-wrapper">
+                    <img src="{{media}}" title="Immagine {{title}}" alt="Immagine {{description}}">
+                    </figure>
+                    <div class="card-calendar d-flex flex-column justify-content-center">
+                    <span class="card-date">{{daypublished}}</span>
+                    <span class="card-day">{{monthpublished}}</span>
                     </div>
-                  </div>
-                  <div class="card-body">
-                    <h3 class="card-title h5 ">{{title}}</h3>
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="head_{{id}}">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#coll_{{id}}" aria-expanded="true" aria-controls="coll_{{id}}">
-                                Leggi di più
-                            </button>
-                        </h2>
-                        <div id="coll_{{id}}" class="accordion-collapse collapse" role="region" aria-labelledby="head_{{id}}">
-                            <div class="accordion-body">
-                                <p>{{description}}</p>
-                                <p>{{text}}</p>
-                            </div>
+                </div>
+                </div>
+                <div class="card-body">
+                <h3 class="card-title h5 ">{{title}}</h3>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="head_{{id}}">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#coll_{{id}}" aria-expanded="true" aria-controls="coll_{{id}}">
+                            Leggi di più
+                        </button>
+                    </h2>
+                    <div id="coll_{{id}}" class="accordion-collapse collapse" role="region" aria-labelledby="head_{{id}}">
+                        <div class="accordion-body">
+                            <p>{{description}}</p>
+                            <p>{{text}}</p>
                         </div>
                     </div>
-                  </div>
                 </div>
-              </div>
-            {{/news}}
-        </script>
+                </div>
+            </div>
+            </div>
+        {{/news}}
+    </script>
     <script>
+        // Fill categories
+        const template = document.getElementById('templateCategories').innerHTML;
+        const rendered = Mustache.render(template, {
+            categories: Object.keys(Ansa.CATEGORIES)
+        });
+        document.getElementById('accessibleAutocomplete').innerHTML = rendered;
         document.addEventListener('DOMContentLoaded', () => {
             var selectElement = document.querySelector('#accessibleAutocomplete');
             var selectAutocomplete = new bootstrap.SelectAutocomplete(selectElement, {
@@ -112,34 +121,34 @@
                 showNoOptionsFound: false,
                 dropdownArrow: () => '',
             });
-        const validate = new bootstrap.FormValidate('#searchForm', {
-            errorFieldCssClass: 'is-invalid',
-            errorLabelCssClass: 'form-feedback',
-            errorLabelStyle: '',
-            focusInvalidField: false,
-        })
-        validate
-            .addField('#accessibleAutocomplete', [
-                {
-                    rule: 'required',
-                    errorMessage: 'Questo campo è richiesto',
-                },
-                {
-                    errorMessage: "Seleziona un'opzione fra quelle disponibili",
-                    validator: bootstrap.ValidatorSelectAutocomplete('#accessibleAutocomplete'),
-                },
-            ])
-            .onSuccess((event) => {
-                const value = document.querySelector('#accessibleAutocomplete').value
-                Ansa.getNews(value).then((res) => {
-                    const template = document.getElementById('templateCardsNews').innerHTML;
-                    const rendered = Mustache.render(template, {
-                        category: value,
-                        news: res.items
-                    });
-                    document.getElementById('newsList').innerHTML = rendered;
-                })
+            const validate = new bootstrap.FormValidate('#searchForm', {
+                errorFieldCssClass: 'is-invalid',
+                errorLabelCssClass: 'form-feedback',
+                errorLabelStyle: '',
+                focusInvalidField: false,
             })
+            validate
+                .addField('#accessibleAutocomplete', [
+                    {
+                        rule: 'required',
+                        errorMessage: 'Questo campo è richiesto',
+                    },
+                    {
+                        errorMessage: "Seleziona un'opzione fra quelle disponibili",
+                        validator: bootstrap.ValidatorSelectAutocomplete('#accessibleAutocomplete'),
+                    },
+                ])
+                .onSuccess((event) => {
+                    const value = document.querySelector('#accessibleAutocomplete').value
+                    Ansa.getNews(value).then((res) => {
+                        const template = document.getElementById('templateCardsNews').innerHTML;
+                        const rendered = Mustache.render(template, {
+                            category: value,
+                            news: res.items
+                        });
+                        document.getElementById('newsList').innerHTML = rendered;
+                    })
+                })
         })
     </script>
 </body>
