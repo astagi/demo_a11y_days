@@ -61,12 +61,12 @@
     </a>
     <footer class="py-4"></footer>
     <script src="./bootstrap-italia/js/bootstrap-italia.bundle.min.js"></script>
-    <script src="https://unpkg.com/ansa@0.0.0/bundle.js"></script>
+    <script src="https://unpkg.com/ansa@0.0.1/bundle.js"></script>
     <script src="https://unpkg.com/mustache@latest"></script>
     <script id="templateCategories" type="x-tmpl-mustache">
         <option selected value="">Scegli una opzione</option>
         {{#categories}}
-        <option value='{{.}}'>{{.}}</option>
+        <option value='{{value}}'>{{name}}</option>
         {{/categories}}
     </script>
     <script id="templateCardsNews" type="x-tmpl-mustache">
@@ -106,10 +106,112 @@
         {{/news}}
     </script>
     <script>
+        const CATEGORIES = [
+            {
+                name: "Politica",
+                value: "Politica"
+            },
+            {
+                name: "Cronaca",
+                value: "Cronaca"
+            },
+            {
+                name: "Cultura",
+                value: "Cultura"
+            },
+            {
+                name: "Sport",
+                value: "Sport"
+            },
+            {
+                name: "Economia",
+                value: "Economia"
+            },
+            {
+                name: "Abruzzo",
+                value: "Abruzzo"
+            },
+            {
+                name: "Basilicata",
+                value: "Basilicata"
+            },
+            {
+                name: "Calabria",
+                value: "Calabria"
+            },
+            {
+                name: "Campania",
+                value: "Campania"
+            },
+            {
+                name: "Emilia Romagna",
+                value: "Emilia Romagna"
+            },
+            {
+                name: "Friuli Venezia Giulia",
+                value: "Friuli Venezia Giulia"
+            },
+            {
+                name: "Lazio",
+                value: "Lazio"
+            },
+            {
+                name: "Liguria",
+                value: "Liguria"
+            },
+            {
+                name: "Lombardia",
+                value: "Lombardia"
+            },
+            {
+                name: "Marcha",
+                value: "Marche"
+            },
+            {
+                name: "Molise",
+                value: "Molise"
+            },
+            {
+                name: "Piemonte",
+                value: "Piemonte"
+            },
+            {
+                name: "Puglia",
+                value: "Puglia"
+            },
+            {
+                name: "Sardegna",
+                value: "Sardegna"
+            },
+            {
+                name: "Sicilia",
+                value: "Sicilia"
+            },
+            {
+                name: "Toscana",
+                value: "Toscana"
+            },
+            {
+                name: "Trentino Alto Adige / Suedtirol",
+                value: "Trentino"
+            },
+            {
+                name: "Umbria",
+                value: "Umbria"
+            },
+            {
+                name: "Valle d'Aosta",
+                value: "Valle Aosta"
+            },
+            {
+                name: "Veneto",
+                value: "Veneto"
+            },
+        ]
         // Fill categories
         const template = document.getElementById('templateCategories').innerHTML;
         const rendered = Mustache.render(template, {
-            categories: Object.keys(Ansa.CATEGORIES)
+            categories: CATEGORIES
         });
         document.getElementById('accessibleAutocomplete').innerHTML = rendered;
         document.addEventListener('DOMContentLoaded', () => {
@@ -139,7 +241,8 @@
                     },
                 ])
                 .onSuccess((event) => {
-                    const value = document.querySelector('#accessibleAutocomplete').value
+                    const e = selectAutocomplete._element;
+                    const value = e.options[e.selectedIndex].value;
                     Ansa.getNews(value).then((res) => {
                         const template = document.getElementById('templateCardsNews').innerHTML;
                         const rendered = Mustache.render(template, {
