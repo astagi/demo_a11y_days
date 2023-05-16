@@ -1,0 +1,27 @@
+{
+  "name": "demo_a11y_days",
+  "version": "1.0.0",
+  "description": "Demo app using Bootstrap Italia - a11ydays",
+  "main": "index.js",
+  "scripts": {
+    "serve": "http-server ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/astagi/demo_a11y_days.git"
+  },
+  "keywords": [
+    "a11y",
+    "demo",
+    "bootstrap"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/astagi/demo_a11y_days/issues"
+  },
+  "homepage": "https://github.com/astagi/demo_a11y_days#readme",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}
