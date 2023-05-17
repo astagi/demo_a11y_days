@@ -2,7 +2,7 @@
 
 Demo per il workshop degli A11y Days - 19/05/2023 - Roma
 
-🌎 La demo è visionabile su [Netlify](bootstrap-italia-demo.netlify.app).
+🌎 La demo è visionabile su [Netlify](https://bootstrap-italia-demo.netlify.app).
 
 ## Lanciare il server locale
 
