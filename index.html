@@ -55,7 +55,7 @@
             </div>
         </div>
     </div>
-    <a href="#" aria-hidden="true" data-bs-toggle="backtotop" class="back-to-top back-to-top-small">
+    <a href="#" aria-hidden="true" tabindex="-1" data-bs-toggle="backtotop" class="back-to-top back-to-top-small">
         <svg class="icon icon-light">
             <use href="./svg/sprites.svg#it-arrow-up"></use>
         </svg>
@@ -87,20 +87,19 @@
                 </div>
                 </div>
                 <div class="card-body">
-                <h3 class="card-title h5 ">{{title}}</h3>
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="head_{{id}}">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#coll_{{id}}" aria-expanded="true" aria-controls="coll_{{id}}">
-                            Leggi di più
-                        </button>
-                    </h2>
-                    <div id="coll_{{id}}" class="accordion-collapse collapse" role="region" aria-labelledby="head_{{id}}">
-                        <div class="accordion-body">
-                            <p>{{description}}</p>
-                            <p>{{text}}</p>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="head_{{id}}">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#coll_{{id}}" aria-expanded="false" aria-controls="coll_{{id}}">
+                                {{title}}
+                            </button>
+                        </h2>
+                        <div id="coll_{{id}}" class="accordion-collapse collapse" role="region" aria-labelledby="head_{{id}}">
+                            <div class="accordion-body">
+                                <p>{{description}}</p>
+                                <p>{{text}}</p>
+                            </div>
                         </div>
                     </div>
-                </div>
                 </div>
             </div>
             </div>
